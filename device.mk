@@ -80,7 +80,7 @@ PRODUCT_PACKAGES += \
 
 # Vibrator Blob
 RECOVERY_BINARY_SOURCE_FILES += \
-    $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/vendor.qti.hardware.vibrator.service
+    $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/vendor.xiaomi.hardware.vibratorfeature.service
 
 # Additional Libraries
 TARGET_RECOVERY_DEVICE_MODULES += \
