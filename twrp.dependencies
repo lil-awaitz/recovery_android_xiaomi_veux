@@ -1,9 +1,9 @@
 [
     {
         "remote"        :   "github",
-        "repository"    :   "Jack1Player/kernel_xiaomi_veux-headers ",
-        "target_path"   :   "kernel/xiaomi/veux",
-        "revision"      :   "twelve"
+        "repository"    :   "android_kernel_xiaomi_sm6375",
+        "target_path"   :   "kernel/xiaomi/sm6375",
+        "revision"      :   "lineage-19.1"
     },
     {
         "remote"        :   "TeamWin",
