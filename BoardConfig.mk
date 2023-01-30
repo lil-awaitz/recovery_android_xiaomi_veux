@@ -45,14 +45,16 @@ TARGET_COPY_OUT_VENDOR := vendor
 # A/B
 AB_OTA_UPDATER := true
 
-AB_OTA_PARTITIONS := \
+AB_OTA_PARTITIONS += \
     boot \
     dtbo \
+    odm \
     product \
     system \
     system_ext \
     vbmeta \
     vbmeta_system \
+    vendor \
     vendor_boot
 
 # Kernel
@@ -87,8 +89,8 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
 TARGET_FORCE_PREBUILT_KERNEL := true
-TARGET_KERNEL_CONFIG := vendor/veux_defconfig
-TARGET_KERNEL_HEADERS := kernel/xiaomi/veux
+TARGET_KERNEL_CONFIG := holi_QGKI
+TARGET_KERNEL_HEADERS := kernel/xiaomi/sm6375
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
