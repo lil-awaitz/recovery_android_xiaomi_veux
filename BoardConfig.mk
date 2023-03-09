@@ -66,31 +66,32 @@ BOARD_KERNEL_SEPARATED_DTBO := false
 BOARD_RAMDISK_OFFSET := 0x01000000
 BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOT_HEADER_VERSION := 3
-BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-
-BOARD_KERNEL_CMDLINE += androidboot.console=ttyMSM0
-BOARD_KERNEL_CMDLINE += androidboot.fstab_suffix=default
+BOARD_KERNEL_BINARIES := kernel
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
+TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)-kernel/kernel
+TARGET_KERNEL_CONFIG := holi_QGKI
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)-kernel/dtb.img
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)-kernel/dtb.img:$(TARGET_COPY_OUT)/dtb.img \
+    $(DEVICE_PATH)-kernel/kernel:kernel \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/ramdisk-modules/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
+    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/vendor-modules/,$(TARGET_COPY_OUT_VENDOR)/lib/modules)
+    
 BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
 BOARD_KERNEL_CMDLINE += androidboot.memcg=1
-BOARD_KERNEL_CMDLINE += androidboot.selinux=enforcing
-BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8
-BOARD_KERNEL_CMDLINE += earlycon=msm_geni_serial,0x4a90000
+BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=4e00000.dwc3
+BOARD_KERNEL_CMDLINE += cgroup.memory=nokmem,nosocket
 BOARD_KERNEL_CMDLINE += loop.max_part=7
-BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237
 BOARD_KERNEL_CMDLINE += service_locator.enable=1
-BOARD_KERNEL_CMDLINE += swiotlb=2048
-
-BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
-
+BOARD_KERNEL_CMDLINE += swiotlb=0
+BOARD_KERNEL_CMDLINE += pcie_ports=compat
+BOARD_KERNEL_CMDLINE += iptable_raw.raw_before_defrag=1
+BOARD_KERNEL_CMDLINE += ip6table_raw.raw_before_defrag=1
+BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 TARGET_FORCE_PREBUILT_KERNEL := true
-TARGET_KERNEL_CONFIG := holi_QGKI
-TARGET_KERNEL_HEADERS := kernel/xiaomi/sm6375
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
