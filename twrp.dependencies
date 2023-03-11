@@ -1,13 +1,1 @@
-[
-    {
-        "remote"        :   "github",
-        "repository"    :   "android_kernel_xiaomi_sm6375",
-        "target_path"   :   "kernel/xiaomi/sm6375",
-        "revision"      :   "lineage-19.1"
-    },
-    {
-        "repository"    :   "android_device_qcom_twrp-common",
-        "target_path"   :   "device/qcom/twrp-common",
-        "revision"      :   "android-12.1"
-    }
-]
+[]

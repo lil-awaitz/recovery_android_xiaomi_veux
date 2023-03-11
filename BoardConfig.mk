@@ -58,40 +58,42 @@ AB_OTA_PARTITIONS += \
     vendor_boot
 
 # Kernel
-BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_PAGESIZE := 4096
+BOARD_KERNEL_BASE          := 0x00000000
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_HEADER_ARCH := arm64
+TARGET_KERNEL_CLANG_COMPILE := true
 BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_KERNEL_SEPARATED_DTBO := false
-BOARD_RAMDISK_OFFSET := 0x01000000
-BOARD_TAGS_OFFSET := 0x00000100
 BOARD_BOOT_HEADER_VERSION := 3
 
 BOARD_KERNEL_BINARIES := kernel
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 TARGET_FORCE_PREBUILT_KERNEL := true
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)-kernel/kernel
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_KERNEL_CONFIG := holi_QGKI
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)-kernel/dtb.img
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)-kernel/dtb.img:$(TARGET_COPY_OUT)/dtb.img \
     $(DEVICE_PATH)-kernel/kernel:kernel \
-    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/ramdisk-modules/,$(TARGET_COPY_OUT_VENDOR_RAMDISK)/lib/modules) \
-    $(call find-copy-subdir-files,*,$(DEVICE_PATH)-kernel/vendor-modules/,$(TARGET_COPY_OUT_VENDOR)/lib/modules)
     
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
-BOARD_KERNEL_CMDLINE += androidboot.memcg=1
-BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=4e00000.dwc3
-BOARD_KERNEL_CMDLINE += cgroup.memory=nokmem,nosocket
-BOARD_KERNEL_CMDLINE += loop.max_part=7
-BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237
-BOARD_KERNEL_CMDLINE += service_locator.enable=1
-BOARD_KERNEL_CMDLINE += swiotlb=0
-BOARD_KERNEL_CMDLINE += pcie_ports=compat
-BOARD_KERNEL_CMDLINE += iptable_raw.raw_before_defrag=1
-BOARD_KERNEL_CMDLINE += ip6table_raw.raw_before_defrag=1
-BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-TARGET_FORCE_PREBUILT_KERNEL := true
+VENDOR_CMDLINE := \
+                  "androidboot.hardware=qcom \
+                   androidboot.memcg=1 \
+				   androidboot.usbcontroller=4e00000.dwc3 \
+				   cgroup.memory=nokmem,nosocket \
+				   loop.max_part=7 \
+				   msm_rtb.filter=0x237 \
+				   service_locator.enable=1 \
+				   swiotlb=0 \
+				   pcie_ports=compat \
+				   iptable_raw.raw_before_defrag=1 \
+				   ip6table_raw.raw_before_defrag=1 \
+				   androidboot.init_fatal_reboot_target=recovery"
+
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --vendor_cmdline $(VENDOR_CMDLINE)
+BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
 
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072
